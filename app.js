@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const title = document.querySelector('.title');
     const timer = document.querySelector('.timer');
+    const changeDate = document.getElementById("change-dl");
+    let dateVal = changeDate.value;
 
     let deadline = new Date('Aug 3, 2020 23:59:59').getTime(),
         x = setInterval(function() {
@@ -26,5 +28,4 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
         },second);
-
-    });
+});
