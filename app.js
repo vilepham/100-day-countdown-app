@@ -141,14 +141,18 @@ document.getElementById('date-form').addEventListener('submit', function(e) {
 
 // Event Listener for delete button
 document.body.addEventListener('click', function(e) {
-    e.preventDefault();
+    const ui = new UI();
     if (e.target.classList.contains('delete')) {
         if (confirm('Are you sure to delete your countdown?')) {
             // Remove clock
             e.target.parentElement.remove();
+
+            // Show success message
+            ui.showAlert('Countdown successfully deleted', 'success');
 
             // Remove from LS
             Storage.removeClock(e.target.previousElementSibling.children[1].textContent);
         }
     }
 })
+
