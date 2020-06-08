@@ -46,8 +46,9 @@
 }
 
 .countdown {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
+    padding: 3%;
     
     display: flex;
     flex-direction: column;
