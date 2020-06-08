@@ -5,31 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="100.png">
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
     <link rel="stylesheet" href="style.css">
     <title>100 Day Challenge</title>
 </head>
 <body>
     
 
-    <div class="clock">
-        <div class="background">
-            <img src="heroes.jpg" alt="">
+    <div class="wrapper">
+        <div class="content">
+            <form id="date-form">
+                <h3>100 Days Challenge</h3>
+                <div>
+                    <label for="deadline">100 Days to</label>
+                    <input type="text" class="one-third" id="title">
+                </div>
+                <div>
+                    <label for="deadline">Countdown From</label>
+                    <input type="date" class="one-third" id="change-dl" placeholder="yyyy-mm-dd">
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
         </div>
-        <div class="countdown">
-            <div class="title">100 Days to <br> Front End Developer</div>
-            <div class="timer">
-                <ul>
-                    <li><span id="days"></span> Days</li>
-                    <li><span id="hours"></span> Hours</li>
-                    <li><span id="minutes"></span> Minutes</li>
-                    <li><span id="seconds"></span> Seconds</li>
-                  </ul>
-            </div>
-            <div class="deadline">til <br> August 3, 2020</div>
-        </div>
-        <div class="change">
-            <input type="datetime-local" name="deadline" id="change-dl">
-        </div>
+        
     </div>
 
     <script src="app.js"></script>
