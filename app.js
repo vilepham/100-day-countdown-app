@@ -1,9 +1,10 @@
 // Clock class
 class Clock {
-    constructor (title, day, hour, deadline) {
+    constructor (title, day, hour, minute, deadline) {
         this.title = title;
         this.day = day;
         this.hour = hour;
+        this.minute = minute;
         this.deadline = deadline;
     }
 }
@@ -22,6 +23,7 @@ class UI {
                 <ul>
                     <li><span>${clock.day}</span> Days</li>
                     <li><span>${clock.hour}</span> Hours</li>
+                    <li><span>${clock.minute}</span> Minutes</li>
                 </ul>
             </div>
             <div class="deadline">til <br> <span>${clock.deadline}</span></div>
@@ -102,21 +104,26 @@ document.getElementById('date-form').addEventListener('submit', function(e) {
     // Get input
     const title = document.getElementById('title').value;
     const date = document.getElementById('change-dl').value;
-
-    // Get current time & time left to display
-    let deadline = new Date(date).getTime();
     
     // Calculate day, hour, minute, second
-    const hourCount = (1000 * 60) * 60,
+    const minuteCount = 1000 * 60
+        hourCount = minuteCount * 60,
         dayCount = hourCount * 24;
 
-    let now = new Date().getTime(),
-    timeLeft = deadline - now;
+    // Get current time & time left to display
+    let beginDate = new Date(date),
+    now = new Date().getTime(),
+    deadline = new Date(beginDate.setDate(beginDate.getDate() + 100)),
+    deadlineTime = deadline.getTime(),
+    deadlineDate = `${deadline.getDate()}/${deadline.getMonth() + 1}/${deadline.getFullYear()}`,  
+    
+    timeLeft = deadlineTime - now;
     
     const day = Math.floor(timeLeft / (dayCount)),
-        hour = Math.floor((timeLeft % (dayCount)) / (hourCount));
+        hour = Math.floor((timeLeft % (dayCount)) / (hourCount)),
+        minute = Math.floor((timeLeft % (hourCount)) / (minuteCount));
 
-    const clock = new Clock(title, day, hour, date);
+    const clock = new Clock(title, day, hour, minute, deadlineDate);
     
     // Validate 
     if (title === '' || date === '') {
