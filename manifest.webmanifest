@@ -1,0 +1,15 @@
+{
+    "name": "100 Days Challenge",
+    "short_name": "Countdown",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "An app that countdown 100 days from specified date.",
+    "icons": [
+        {
+            "src": "100.png",
+            "sizes": "175x175",
+            "type": "image/png"
+        }
+    ]
+}

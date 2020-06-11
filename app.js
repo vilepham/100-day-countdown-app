@@ -93,6 +93,19 @@ class Storage {
     }
 }
 
+// Event Listener for window load 
+window.addEventListener('load', () => {
+    registerSW();
+})
+async function registerSW() {
+    if ('serviceWorker' in navigator) {
+        try {
+            await navigator.serviceWorker.register('sw.js');
+        } catch (e) {
+            console.log('SW registration failed');
+        }
+    }
+}
 // Event Listener for DOM load
 document.addEventListener('DOMContentLoaded', Storage.displayClocks);
 
@@ -162,4 +175,3 @@ document.body.addEventListener('click', function(e) {
         }
     }
 })
-
