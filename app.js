@@ -1,6 +1,6 @@
 // Clock class
 class Clock {
-    constructor (title, deadline) {
+    constructor (title, day, hour, minute, second, deadline) {
         this.title = title;
         
         this.deadline = deadline;
@@ -144,6 +144,8 @@ document.getElementById('date-form').addEventListener('submit', (e) => {
     // Get current time and time left
     let now = new Date().getTime(),
         timeLeft = deadlineTime - now;
+    
+    let day, hour, minute, second;
 
     // Validate 
     if (title === '' || date === '') {
@@ -155,7 +157,24 @@ document.getElementById('date-form').addEventListener('submit', (e) => {
         ui.showAlert('Countdown successfully added', 'success');
 
         // New clock with new title and deadline
-        const clock = new Clock(title, deadlineDate);
+        const clock = new Clock(title, day, hour, minute, second, deadlineDate);
+
+        // Update clock every second 
+        const clockInterval = setInterval(() => {
+            timeLeft = timeLeft - secondCount;
+            let day = Math.floor(timeLeft / (dayCount)),
+                hour = Math.floor((timeLeft % (dayCount)) / (hourCount)),
+                minute = Math.floor((timeLeft % (hourCount)) / (minuteCount)),
+                second = Math.floor((timeLeft % (minuteCount)) / (secondCount));
+
+            clock.updateClock(day, hour, minute, second);
+
+            ui.updateClock(deadlineDate, day, hour, minute, second)
+            
+            if (timeLeft < 0) {
+                clearInterval(clockInterval);
+            }
+        }, secondCount)
 
         // Add clock to UI
         ui.addClock(clock);
@@ -166,22 +185,6 @@ document.getElementById('date-form').addEventListener('submit', (e) => {
         // Clear input fields
         ui.clearFields();
 
-        // Update clock every second 
-        const clockInterval = setInterval(() => {
-            timeLeft = timeLeft - secondCount;
-            let day = Math.floor(timeLeft / (dayCount)),
-                hour = Math.floor((timeLeft % (dayCount)) / (hourCount)),
-                minute = Math.floor((timeLeft % (hourCount)) / (minuteCount)),
-                second = Math.floor((timeLeft % (minuteCount)) / (secondCount));
-    
-            clock.updateClock(day, hour, minute, second);
-
-            ui.updateClock(deadlineDate, day, hour, minute, second)
-            
-            if (timeLeft < 0) {
-                clearInterval(clockInterval);
-            }
-        }, secondCount)
     }
 })
 
