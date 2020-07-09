@@ -1,11 +1,15 @@
 // Clock class
 class Clock {
-    constructor (title, day, hour, minute, deadline) {
+    constructor (title, deadline) {
         this.title = title;
+        
+        this.deadline = deadline;
+    }
+    updateClock = (day, hour, minute, second) => {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
-        this.deadline = deadline;
+        this.second = second;
     }
 }
 
@@ -21,9 +25,10 @@ class UI {
             <div class="title">100 Days to <br> ${clock.title}</div>
             <div class="timer">
                 <ul>
-                    <li><span>${clock.day}</span> Days</li>
-                    <li><span>${clock.hour}</span> Hours</li>
-                    <li><span>${clock.minute}</span> Minutes</li>
+                    <li><span class="day${clock.deadline}"></span> Days</li>
+                    <li><span class="hour${clock.deadline}"></span> Hours</li>
+                    <li><span class="minute${clock.deadline}"></span> Minutes</li>
+                    <li><span class="second${clock.deadline}"></span> Seconds</li>
                 </ul>
             </div>
             <div class="deadline">til <br> <span>${clock.deadline}</span></div>
@@ -31,6 +36,12 @@ class UI {
         `
         // Append clock 
         list.appendChild(countdown);
+    }
+    updateClock(deadline, day, hour, minute, second) {
+        document.querySelector(`.day${deadline}`).innerHTML = day;
+        document.querySelector(`.hour${deadline}`).innerHTML = hour;
+        document.querySelector(`.minute${deadline}`).innerHTML = minute;
+        document.querySelector(`.second${deadline}`).innerHTML = second;
     }
     showAlert(msg, className) {
         // Create alert element
@@ -110,34 +121,30 @@ class Storage {
 document.addEventListener('DOMContentLoaded', Storage.displayClocks);
 
 // Event Listener for form
-document.getElementById('date-form').addEventListener('submit', function(e) {
+document.getElementById('date-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const ui = new UI();
 
     // Get input
     const title = document.getElementById('title').value;
     const date = document.getElementById('change-dl').value;
-    
-    // Calculate day, hour, minute, second
-    const minuteCount = 1000 * 60
-        hourCount = minuteCount * 60,
-        dayCount = hourCount * 24;
 
     // Get current time & time left to display
     let beginDate = new Date(date),
-    now = new Date().getTime(),
-    deadline = new Date(beginDate.setDate(beginDate.getDate() + 100)),
-    deadlineTime = deadline.getTime(),
-    deadlineDate = `${deadline.getDate()}/${deadline.getMonth() + 1}/${deadline.getFullYear()}`,  
-    
-    timeLeft = deadlineTime - now;
-    
-    const day = Math.floor(timeLeft / (dayCount)),
-        hour = Math.floor((timeLeft % (dayCount)) / (hourCount)),
-        minute = Math.floor((timeLeft % (hourCount)) / (minuteCount));
+        deadline = new Date(beginDate.setDate(beginDate.getDate() + 100)),
+        deadlineTime = deadline.getTime(),
+        deadlineDate = `${deadline.getDate()}-${deadline.getMonth() + 1}-${deadline.getFullYear()}`;
 
-    const clock = new Clock(title, day, hour, minute, deadlineDate);
-    
+    // Define day, hour, minute, second count
+    const secondCount = 1000,
+        minuteCount = secondCount * 60,
+        hourCount = minuteCount * 60,
+        dayCount = hourCount * 24;
+
+    // Get current time and time left
+    let now = new Date().getTime(),
+        timeLeft = deadlineTime - now;
+
     // Validate 
     if (title === '' || date === '') {
         // Show alert
@@ -147,7 +154,10 @@ document.getElementById('date-form').addEventListener('submit', function(e) {
         // Show alert
         ui.showAlert('Countdown successfully added', 'success');
 
-        // Add clock 
+        // New clock with new title and deadline
+        const clock = new Clock(title, deadlineDate);
+
+        // Add clock to UI
         ui.addClock(clock);
 
         // Add to LS
@@ -155,8 +165,24 @@ document.getElementById('date-form').addEventListener('submit', function(e) {
 
         // Clear input fields
         ui.clearFields();
-    }
 
+        // Update clock every second 
+        const clockInterval = setInterval(() => {
+            timeLeft = timeLeft - secondCount;
+            let day = Math.floor(timeLeft / (dayCount)),
+                hour = Math.floor((timeLeft % (dayCount)) / (hourCount)),
+                minute = Math.floor((timeLeft % (hourCount)) / (minuteCount)),
+                second = Math.floor((timeLeft % (minuteCount)) / (secondCount));
+    
+            clock.updateClock(day, hour, minute, second);
+
+            ui.updateClock(deadlineDate, day, hour, minute, second)
+            
+            if (timeLeft < 0) {
+                clearInterval(clockInterval);
+            }
+        }, secondCount)
+    }
 })
 
 // Event Listener for delete button

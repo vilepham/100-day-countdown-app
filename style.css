@@ -68,15 +68,20 @@
     margin-top: 3%;
     margin-bottom: 0;
 }
+
 ul {
     list-style: none;
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 90%;
     margin-left: 50%;
     transform: translateX(-50%);
 }
 
+li {
+    font-size: 17px;
+}
 li span {
     font-size: 37px;
 }
@@ -89,10 +94,30 @@ form {
     font-family: Jost, sans-serif;
 }
 
+.form-wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+input{
+    width: 100%;
+}
+input[type="date"] {
+    border: rgb(218, 218, 218) solid 0.2px;
+    border-radius: 2px;
+    outline: none;
+    font-family: inherit;
+    font-style: inherit;
+    padding: 2% 5%;
+}
+input[type="submit"] {
+    margin-top: 7%;
+}
 .delete {
     cursor: pointer;
     color: #b8860b;
 }
+
 
 @media screen and (max-width: 400px) {
     .countdown {
